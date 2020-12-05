@@ -14,7 +14,6 @@ from tensorflow.keras.utils import plot_model
 tfds.disable_progress_bar()
 autotune = tf.data.experimental.AUTOTUNE
 
-
 # Load the monet-photo dataset using tensorflow-datasets.
 # dataset, _ = tfds.load("cycle_gan/monet2photo", with_info=True, as_supervised=True,
 #                         data_dir="")
@@ -32,7 +31,6 @@ gamma_init = keras.initializers.RandomNormal(mean=0.0, stddev=0.02)
 
 buffer_size = 256
 batch_size = 1
-
 
 
 def normalize_img(img):
@@ -87,14 +85,14 @@ class ReflectionPadding2D(layers.Layer):
 
 
 def residual_block(
-    x,
-    activation,
-    kernel_initializer=kernel_init,
-    kernel_size=(3, 3),
-    strides=(1, 1),
-    padding="valid",
-    gamma_initializer=gamma_init,
-    use_bias=False,
+        x,
+        activation,
+        kernel_initializer=kernel_init,
+        kernel_size=(3, 3),
+        strides=(1, 1),
+        padding="valid",
+        gamma_initializer=gamma_init,
+        use_bias=False,
 ):
     dim = x.shape[-1]
     input_tensor = x
@@ -126,15 +124,15 @@ def residual_block(
 
 
 def downsample(
-    x,
-    filters,
-    activation,
-    kernel_initializer=kernel_init,
-    kernel_size=(3, 3),
-    strides=(2, 2),
-    padding="same",
-    gamma_initializer=gamma_init,
-    use_bias=False,
+        x,
+        filters,
+        activation,
+        kernel_initializer=kernel_init,
+        kernel_size=(3, 3),
+        strides=(2, 2),
+        padding="same",
+        gamma_initializer=gamma_init,
+        use_bias=False,
 ):
     x = layers.Conv2D(
         filters,
@@ -151,15 +149,15 @@ def downsample(
 
 
 def upsample(
-    x,
-    filters,
-    activation,
-    kernel_size=(3, 3),
-    strides=(2, 2),
-    padding="same",
-    kernel_initializer=kernel_init,
-    gamma_initializer=gamma_init,
-    use_bias=False,
+        x,
+        filters,
+        activation,
+        kernel_size=(3, 3),
+        strides=(2, 2),
+        padding="same",
+        kernel_initializer=kernel_init,
+        gamma_initializer=gamma_init,
+        use_bias=False,
 ):
     x = layers.Conv2DTranspose(
         filters,
@@ -175,14 +173,13 @@ def upsample(
     return x
 
 
-
 def get_resnet_generator(
-    filters=64,
-    num_downsampling_blocks=2,
-    num_residual_blocks=9,
-    num_upsample_blocks=2,
-    gamma_initializer=gamma_init,
-    name=None,
+        filters=64,
+        num_downsampling_blocks=2,
+        num_residual_blocks=9,
+        num_upsample_blocks=2,
+        gamma_initializer=gamma_init,
+        name=None,
 ):
     img_input = layers.Input(shape=input_img_size, name=name + "_img_input")
     x = ReflectionPadding2D(padding=(3, 3))(img_input)
@@ -214,8 +211,9 @@ def get_resnet_generator(
     model = keras.models.Model(img_input, x, name=name)
     return model
 
+
 def get_discriminator(
-    filters=64, kernel_initializer=kernel_init, num_downsampling=3, name=None
+        filters=64, kernel_initializer=kernel_init, num_downsampling=3, name=None
 ):
     img_input = layers.Input(shape=input_img_size, name=name + "_img_input")
     x = layers.Conv2D(
@@ -257,13 +255,13 @@ def get_discriminator(
 
 class CycleGan(keras.Model):
     def __init__(
-        self,
-        generator_G,
-        generator_F,
-        discriminator_X,
-        discriminator_Y,
-        lambda_cycle=15.0,
-        lambda_identity=0.5,
+            self,
+            generator_G,
+            generator_F,
+            discriminator_X,
+            discriminator_Y,
+            lambda_cycle=15.0,
+            lambda_identity=0.5,
     ):
         super(CycleGan, self).__init__()
         self.gen_G = generator_G
@@ -274,13 +272,13 @@ class CycleGan(keras.Model):
         self.lambda_identity = lambda_identity
 
     def compile(
-        self,
-        gen_G_optimizer,
-        gen_F_optimizer,
-        disc_X_optimizer,
-        disc_Y_optimizer,
-        gen_loss_fn,
-        disc_loss_fn,
+            self,
+            gen_G_optimizer,
+            gen_F_optimizer,
+            disc_X_optimizer,
+            disc_Y_optimizer,
+            gen_loss_fn,
+            disc_loss_fn,
     ):
         super(CycleGan, self).compile()
         self.gen_G_optimizer = gen_G_optimizer
@@ -343,14 +341,14 @@ class CycleGan(keras.Model):
 
             # Generator identity loss
             id_loss_G = (
-                self.identity_loss_fn(real_y, same_y)
-                * self.lambda_cycle
-                * self.lambda_identity
+                    self.identity_loss_fn(real_y, same_y)
+                    * self.lambda_cycle
+                    * self.lambda_identity
             )
             id_loss_F = (
-                self.identity_loss_fn(real_x, same_x)
-                * self.lambda_cycle
-                * self.lambda_identity
+                    self.identity_loss_fn(real_x, same_x)
+                    * self.lambda_cycle
+                    * self.lambda_identity
             )
 
             # Total generator loss
@@ -392,8 +390,10 @@ class CycleGan(keras.Model):
             "D_Y_loss": disc_Y_loss,
         }
 
+
 # Loss function for evaluating adversarial loss
 adv_loss_fn = keras.losses.MeanSquaredError()
+
 
 # Define the loss function for the generators
 def generator_loss_fn(fake):

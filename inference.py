@@ -19,7 +19,7 @@ if __name__ == "__main__":
     cycle_gan_model = CycleGan(
         generator_G=gen_G, generator_F=gen_F, discriminator_X=disc_X, discriminator_Y=disc_Y, lambda_cycle=15
     )
-    
+
     print("44444444444\n")
     # Load the checkpoints
     weight_file = "./pre-trained weights/cyclegan_checkpoints.100"
