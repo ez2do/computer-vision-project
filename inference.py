@@ -3,11 +3,12 @@ import numpy as np
 import tensorflow as tf
 from model.CycleGAN import CycleGan, get_resnet_generator, get_discriminator
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+
 def pretrained_model_predict(path_pretrained_weight, path_image,
-                            path_predicted_image='./images/predicted_img.png'):
-    
+                             path_predicted_image='./images/predicted_img.png'):
     # Get the generators
     gen_G = get_resnet_generator(name="generator_G")
     gen_F = get_resnet_generator(name="generator_F")
@@ -39,9 +40,9 @@ def pretrained_model_predict(path_pretrained_weight, path_image,
     # Done
     print("Inference done!")
 
+
 if __name__ == "__main__":
-    predicted_image = pretrained_model_predict(
-                            path_pretrained_weight='./pretrained_weights/cyclegan_checkpoints.100',
-                            path_image='./images/wallpapersden.com_128x128.jpg',
-                            path_predicted_image='./images/predicted_img.png')
-    
+    pretrained_model_predict(
+        path_pretrained_weight='pretrained_weights/cyclegan_checkpoints.100',
+        path_image='./images/wallpapersden.com_128x128.jpg',
+        path_predicted_image='./images/predicted_img.png')

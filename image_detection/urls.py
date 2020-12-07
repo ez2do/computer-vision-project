@@ -17,11 +17,12 @@ from django.conf.urls import url
 from django.urls import include
 from rest_framework.routers import DefaultRouter
 
-from api.views.basic import BasicView
+from api.views.basic import ImageProcessingView
 
 router = DefaultRouter(trailing_slash=False)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^hello', BasicView.as_view()),
+    url(r'^hello', ImageProcessingView.as_view({'get': 'get'})),
+    url(r'^monet2photo', ImageProcessingView.as_view({'post': 'monet2photo'})),
 ]
