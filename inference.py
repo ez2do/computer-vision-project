@@ -5,7 +5,8 @@ from model.CycleGAN import CycleGan, get_resnet_generator, get_discriminator
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-def pretrained_model_predict(path_pretrained_weight, path_image):
+def pretrained_model_predict(path_pretrained_weight, path_image,
+                            path_predicted_image='./images/predicted_img.png'):
     
     # Get the generators
     gen_G = get_resnet_generator(name="generator_G")
@@ -33,13 +34,14 @@ def pretrained_model_predict(path_pretrained_weight, path_image):
     img = (input_arr[0] * 127.5 + 127.5).astype(np.uint8)
 
     prediction = keras.preprocessing.image.array_to_img(prediction)
-    prediction.save("./images/predicted_img.png")
+    prediction.save(path_predicted_image)
 
     # Done
     print("Inference done!")
 
 if __name__ == "__main__":
     predicted_image = pretrained_model_predict(
-                            path_pretrained_weight='./pre-trained_weights/cyclegan_checkpoints.020',
-                            path_image='./images/wallpapersden.com_128x128.jpg')
+                            path_pretrained_weight='./pretrained_weights/cyclegan_checkpoints.100',
+                            path_image='./images/wallpapersden.com_128x128.jpg',
+                            path_predicted_image='./images/predicted_img.png')
     
