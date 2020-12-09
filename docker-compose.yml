@@ -1,6 +1,6 @@
 version: "3"
 services:
   api:
-    image: cv_project
+    image: cv-project
     ports:
       - 8000:8000
