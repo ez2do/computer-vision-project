@@ -5,10 +5,34 @@ import { TrainClass, TrainOptions } from "components";
 
 function App() {
   const image = useRef();
+  const result = useRef();
   const [option, setOption] = useState(1);
 
-  function onSubmit() {
-    console.log("okok", option);
+  async function onSubmit() {
+    const dataURL = image.current.toDataURL("image/jpeg", 1.0);
+    const blobBin = atob(dataURL.split(",")[1]);
+    const array = [];
+    for (var i = 0; i < blobBin.length; i++) {
+      array.push(blobBin.charCodeAt(i));
+    }
+    const file = new Blob([new Uint8Array(array)], { type: "image/png" });
+
+    const form = new FormData();
+    form.append("file", file);
+    const response = await fetch("http://157.230.241.244:8000/monet2photo", {
+      method: "POST",
+      body: form,
+    });
+
+    const blob = await response.blob();
+    const ctx = result.current.getContext("2d");
+    const img = new Image();
+
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+    };
+
+    img.src = URL.createObjectURL(blob);
   }
 
   return (
@@ -28,6 +52,12 @@ function App() {
           setOption={setOption}
           onSubmit={onSubmit}
         />
+        <div className="m-4 bg-white rounded-md p-2">
+          <div className="border-b-2 border-solid border-gray-400 p-2 text-lg font-bold">
+            Result
+          </div>
+          <canvas ref={result} style={{ width: 300, height: 300 }} />
+        </div>
       </div>
     </div>
   );
