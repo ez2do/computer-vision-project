@@ -32,4 +32,5 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
           docker build -t cv-project cv-project
-          docker stack deploy -c cv-project/docker-compose.yml cvproject
+          docker container ls | docker-compose --project-name=cvproject --file="cv-project/docker-compose.yml" down
+          docker-compose --project-name=cvproject --file="cv-project/docker-compose.yml" up
