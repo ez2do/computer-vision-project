@@ -33,4 +33,4 @@ jobs:
         script: |
           docker build -t cv-project cv-project
           docker container ls | docker-compose --project-name=cvproject --file="cv-project/docker-compose.yml" down
-          docker-compose --project-name=cvproject --file="cv-project/docker-compose.yml" up
+          docker-compose --project-name=cvproject --file="cv-project/docker-compose.yml" up -d
