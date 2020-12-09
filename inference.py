@@ -42,7 +42,11 @@ def pretrained_model_predict(path_pretrained_weight, path_image,
 
 
 if __name__ == "__main__":
-    pretrained_model_predict(
-        path_pretrained_weight='pretrained_weights/cyclegan_checkpoints.100',
-        path_image='./images/wallpapersden.com_128x128.jpg',
-        path_predicted_image='./images/predicted_img.png')
+    path_pretrained_weight = "pretrained_weights/cyclegan_checkpoints.001.index"
+    try:
+        pretrained_model_predict(
+            path_pretrained_weight=path_pretrained_weight,
+            path_image='./images/wallpapersden.com_128x128.jpg',
+            path_predicted_image='./images/predicted_img.png')
+    except Exception as e:
+        print(e)
