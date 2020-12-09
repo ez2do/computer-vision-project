@@ -47,7 +47,7 @@ function TrainOptions({ option, setOption, onSubmit }) {
       <button
         className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white p-1 px-16 rounded"
         children="Capture"
-        onClick={() => onSubmit(option)}
+        onClick={onSubmit}
       />
     </div>
   );
