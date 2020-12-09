@@ -4,19 +4,16 @@ import WebcamButton from "components/webcam_button";
 import UploadButton from "components/upload_button";
 import CloseButton from "components/close_button";
 
-import { useInterval } from "hooks";
-
-export default function TrainClass({ name = "" }) {
+export default function TrainClass({ canvasRef }) {
   const [mode, setMode] = useState("none");
 
   return (
-    <div className="bg-white mb-10 rounded-md" style={{ width: 590 }}>
+    <div className="bg-white mb-10 rounded-md">
       <div className="border-b-2 border-solid border-gray-400 p-2 text-lg font-bold">
-        Class 1
+        Source
       </div>
       {mode === "none" && (
         <div className="p-2">
-          <div className="text-sm">Add Image Samples:</div>
           <div className="flex my-2 space-x-2">
             <WebcamButton onClick={() => setMode("webcam")} />
             <UploadButton onClick={() => setMode("upload")} />
@@ -25,7 +22,10 @@ export default function TrainClass({ name = "" }) {
       )}
 
       {mode === "webcam" && (
-        <TakeImageFromWebcam onClose={() => setMode("none")} />
+        <TakeImageFromWebcam
+          onClose={() => setMode("none")}
+          canvasRef={canvasRef}
+        />
       )}
       {mode === "upload" && (
         <TakeImageFromUpload onClose={() => setMode("none")} />
@@ -34,10 +34,8 @@ export default function TrainClass({ name = "" }) {
   );
 }
 
-function TakeImageFromWebcam({ onClose }) {
+function TakeImageFromWebcam({ onClose, canvasRef }) {
   const videoRef = useRef();
-  const [images, setImages] = useState([]);
-  const [capturing, setCapturing] = useState(false);
 
   useEffect(() => {
     let tracks = [];
@@ -59,60 +57,36 @@ function TakeImageFromWebcam({ onClose }) {
     };
   }, []);
 
-  useInterval(() => {
-    if (capturing) {
-      const vw = videoRef.current.videoWidth;
-      const vh = videoRef.current.videoHeight;
-      const canvas = document.createElement("canvas");
-      canvas.setAttribute("width", vw);
-      canvas.setAttribute("height", vh);
-      canvas.getContext("2d").drawImage(videoRef.current, 0, 0, vw, vh);
-
-      const image = canvas.toDataURL("image/jpeg", 1);
-      setImages([...images, image]);
-    }
-  }, 100);
+  function onCapture() {
+    const vw = videoRef.current.videoWidth;
+    const vh = videoRef.current.videoHeight;
+    canvasRef.current.setAttribute("width", vw);
+    canvasRef.current.setAttribute("height", vh);
+    canvasRef.current
+      .getContext("2d")
+      .drawImage(videoRef.current, 0, 0, vw, vh);
+    onClose();
+  }
 
   return (
-    <div className="flex">
-      <div style={{ width: 295, height: 430 }} className="bg-blue-100">
-        <div className="p-2 flex justify-between items-center">
-          <span className="text-sm">Webcam</span>
-          <CloseButton onClick={onClose} />
-        </div>
-        <video
-          ref={videoRef}
-          width="400px"
-          height="400px"
-          className="rounded"
-          autoPlay={true}
-        />
-        <div className="p-2 text-center">
-          <button
-            onMouseDown={() => setCapturing(true)}
-            onMouseUp={() => setCapturing(false)}
-            className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white p-1 px-16 rounded"
-            children="Hold to Record"
-          />
-        </div>
+    <div className="bg-blue-100">
+      <div className="p-2 flex justify-between items-center">
+        <span className="text-sm">Webcam</span>
+        <CloseButton onClick={onClose} />
       </div>
-      <div style={{ width: 295, height: 430 }}>
-        <div className="p-2">Image Samples: {images.length}</div>
-        <div
-          className="w-auto overflow-y-croll overflow-x-hidden"
-          style={{ height: 380 }}
-        >
-          {images.map((image, index) => (
-            <img
-              key={`index-${index}`}
-              alt=""
-              src={image}
-              className="rounded-lg m-1 inline-block"
-              width="58px"
-              height="58px"
-            />
-          ))}
-        </div>
+      <video
+        ref={videoRef}
+        width="400px"
+        height="400px"
+        className="rounded"
+        autoPlay={true}
+      />
+      <div className="p-2 text-center">
+        <button
+          onClick={onCapture}
+          className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white p-1 px-16 rounded"
+          children="Capture"
+        />
       </div>
     </div>
   );
