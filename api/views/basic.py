@@ -37,33 +37,32 @@ class ImageProcessingView(GenericViewSet):
         return Response("ok")
 
     def convert(self, request):
-        file_obj = request.FILES['file']
-
-        to_type = request.query_params.get('to')
-        converter = CONVERT_MAP.get(to_type)
-        if converter is None:
-            return Response(status=400, data={
-                "error": "convert type not supported"
-            })
-
-        src_path = SRC_MEDIA_ROOT + file_obj.name
-        dst_path = converter['destination_path'] + file_obj.name
-
-        with default_storage.open(src_path, 'wb+') as destination:
-            for chunk in file_obj.chunks():
-                destination.write(chunk)
-
         try:
+            file_obj = request.FILES['file']
+
+            to_type = request.query_params.get('to')
+            converter = CONVERT_MAP.get(to_type)
+            if converter is None:
+                return Response(status=400, data={
+                    "error": "convert type not supported"
+                })
+
+            src_path = SRC_MEDIA_ROOT + file_obj.name
+            dst_path = converter['destination_path'] + file_obj.name
+
+            with default_storage.open(src_path, 'wb+') as destination:
+                for chunk in file_obj.chunks():
+                    destination.write(chunk)
+
             pretrained_model_predict(converter['pre_trained_path'], src_path, dst_path)
+
+            with open(dst_path, "rb") as fh:
+                response = HttpResponse(fh.read(), content_type="application/octet-stream")
+                response['Content-Disposition'] = 'attachment; filename={}_monet.docx'.format(file_obj.name)
+                return response
+
         except Exception as e:
             print(e)
             return Response(status=500, data={
                 "error": e.__str__()
             })
-
-        with open(dst_path, "rb") as fh:
-            response = HttpResponse(fh.read(), content_type="application/octet-stream")
-            response['Content-Disposition'] = 'attachment; filename={}_monet.docx'.format(file_obj.name)
-            return response
-
-        return Response(status=500)
