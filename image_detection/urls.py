@@ -24,5 +24,5 @@ router = DefaultRouter(trailing_slash=False)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^hello', ImageProcessingView.as_view({'get': 'get'})),
-    url(r'^monet2photo', ImageProcessingView.as_view({'post': 'monet2photo'})),
+    url(r'^convert', ImageProcessingView.as_view({'post': 'convert'})),
 ]
