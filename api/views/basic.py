@@ -9,29 +9,61 @@ from image_detection.settings import BASE_DIR
 from inference import pretrained_model_predict
 
 SRC_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/source/')
+
 MONET_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/monet/')
-PRE_TRAINED_FILE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_checkpoints.100')
+SUMMER_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/summer/')
+WINTER_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/winter/')
+
+PRE_TRAINED_MONET = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_checkpoints.100')
+
+CONVERT_MAP = {
+    'monet': {
+        'destination_path': MONET_MEDIA_ROOT,
+        'pre_trained_path': PRE_TRAINED_MONET
+    },
+    'summer': {
+        'destination_path': '',
+        'pre_trained_path': ''
+    },
+    'winter': {
+        'destination_path': '',
+        'pre_trained_path': ''
+    }
+}
 
 
 class ImageProcessingView(GenericViewSet):
     def get(self, request):
         return Response("ok")
 
-    def monet2photo(self, request):
+    def convert(self, request):
         file_obj = request.FILES['file']
 
+        to_type = request.query_params.get('to')
+        converter = CONVERT_MAP.get(to_type)
+        if converter is None:
+            return Response(status=400, data={
+                "error": "convert type not supported"
+            })
+
         src_path = SRC_MEDIA_ROOT + file_obj.name
-        dst_path = MONET_MEDIA_ROOT + file_obj.name
+        dst_path = converter['destination_path'] + file_obj.name
 
         with default_storage.open(src_path, 'wb+') as destination:
             for chunk in file_obj.chunks():
                 destination.write(chunk)
 
-        with open(src_path, "rb") as fh:
+        try:
+            pretrained_model_predict(converter['pre_trained_path'], src_path, dst_path)
+        except Exception as e:
+            print(e)
+            return Response(status=500, data={
+                "error": e.__str__()
+            })
+
+        with open(dst_path, "rb") as fh:
             response = HttpResponse(fh.read(), content_type="application/octet-stream")
             response['Content-Disposition'] = 'attachment; filename={}_monet.docx'.format(file_obj.name)
             return response
 
         return Response(status=500)
-        # pretrained_model_predict(PRE_TRAINED_FILE, src_path, dst_path)
-        # return Response("ok")

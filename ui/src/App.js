@@ -26,10 +26,12 @@ function App() {
 
     const blob = await response.blob();
     const ctx = result.current.getContext("2d");
+    result.current.setAttribute("width", 400);
+    result.current.setAttribute("height", 400);
     const img = new Image();
 
     img.onload = function () {
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, 400, 400);
     };
 
     img.src = URL.createObjectURL(blob);
