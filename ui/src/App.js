@@ -18,8 +18,8 @@ function App() {
     const file = new Blob([new Uint8Array(array)], { type: "image/png" });
 
     const form = new FormData();
-    form.append("file", file);
-    const response = await fetch("http://157.230.241.244:8000/monet2photo", {
+    form.append("file", file, 'upload.jpeg');
+    const response = await fetch("http://157.230.241.244:8000/convert?to=monet", {
       method: "POST",
       body: form,
     });
