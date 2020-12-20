@@ -15,7 +15,7 @@ function App() {
     for (var i = 0; i < blobBin.length; i++) {
       array.push(blobBin.charCodeAt(i));
     }
-    const file = new Blob([new Uint8Array(array)], { type: "image/png" });
+    const file = new Blob([new Uint8Array(array)], { type: "image/jpeg" });
 
     const form = new FormData();
     form.append("file", file, 'upload.jpeg');
