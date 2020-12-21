@@ -4,8 +4,12 @@ import WebcamButton from "components/webcam_button";
 import UploadButton from "components/upload_button";
 import CloseButton from "components/close_button";
 
-export default function TrainClass({ canvasRef }) {
+export default function TrainClass({ canvasRef, upload }) {
   const [mode, setMode] = useState("none");
+
+  function onUpload() {
+    upload.current.click();
+  }
 
   return (
     <div className="bg-white mb-10 rounded-md">
@@ -16,7 +20,7 @@ export default function TrainClass({ canvasRef }) {
         <div className="p-2">
           <div className="flex my-2 space-x-2">
             <WebcamButton onClick={() => setMode("webcam")} />
-            <UploadButton onClick={() => setMode("upload")} />
+            <UploadButton onClick={onUpload} />
           </div>
         </div>
       )}

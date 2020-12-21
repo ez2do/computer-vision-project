@@ -6,6 +6,7 @@ import { TrainClass, TrainOptions } from "components";
 function App() {
   const image = useRef();
   const result = useRef();
+  const upload = useRef();
   const [option, setOption] = useState(1);
 
   async function onSubmit() {
@@ -18,11 +19,14 @@ function App() {
     const file = new Blob([new Uint8Array(array)], { type: "image/jpeg" });
 
     const form = new FormData();
-    form.append("file", file, 'upload.jpeg');
-    const response = await fetch("http://157.230.241.244:8000/convert?to=monet", {
-      method: "POST",
-      body: form,
-    });
+    form.append("file", file, "upload.jpeg");
+    const response = await fetch(
+      "http://157.230.241.244:8000/convert?to=monet",
+      {
+        method: "POST",
+        body: form,
+      }
+    );
 
     const blob = await response.blob();
     const ctx = result.current.getContext("2d");
@@ -37,11 +41,21 @@ function App() {
     img.src = URL.createObjectURL(blob);
   }
 
+  function onUpload(e) {
+    const img = new Image();
+    img.onload = function () {
+      image.current.setAttribute("width", 400);
+      image.current.setAttribute("height", 400);
+      image.current.getContext("2d").drawImage(img, 0, 0, 400, 400);
+    };
+    img.src = URL.createObjectURL(e.target.files[0]);
+  }
+
   return (
     <div className="h-screen bg-gray-200">
       <div className="flex items-center">
         <div className="mt-10 ml-10">
-          <TrainClass canvasRef={image} />
+          <TrainClass canvasRef={image} upload={upload} />
         </div>
         <div className="m-4 bg-white rounded-md p-2">
           <div className="border-b-2 border-solid border-gray-400 p-2 text-lg font-bold">
@@ -49,6 +63,7 @@ function App() {
           </div>
           <canvas ref={image} style={{ width: 300, height: 300 }} />
         </div>
+        <input type="file" hidden ref={upload} onChange={onUpload} />
         <TrainOptions
           option={option}
           setOption={setOption}
