@@ -14,7 +14,8 @@ MONET_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/monet/')
 SUMMER_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/summer/')
 WINTER_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/winter/')
 
-PRE_TRAINED_MONET = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_checkpoints.100')
+PRE_TRAINED_MONET = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_monet2photo_checkpoints.100')
+PRE_TRAINED_SUMMER = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_summer2winter_checkpoints.040')
 
 CONVERT_MAP = {
     'monet': {
@@ -22,8 +23,8 @@ CONVERT_MAP = {
         'pre_trained_path': PRE_TRAINED_MONET
     },
     'summer': {
-        'destination_path': '',
-        'pre_trained_path': ''
+        'destination_path': SUMMER_MEDIA_ROOT,
+        'pre_trained_path': PRE_TRAINED_SUMMER
     },
     'winter': {
         'destination_path': '',
