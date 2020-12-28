@@ -26,23 +26,23 @@ PRE_TRAINED_ORANGE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_apple2o
 CONVERT_MAP = {
     'monet': {
         'destination_path': MONET_MEDIA_ROOT,
-        'pre_trained_path': PRE_TRAINED_MONET
+        'pre_trained_path': PRE_TRAINED_MONET,
     },
     'summer': {
         'destination_path': SUMMER_MEDIA_ROOT,
-        'pre_trained_path': PRE_TRAINED_SUMMER
+        'pre_trained_path': PRE_TRAINED_SUMMER,
     },
     'ukiyoe': {
         'destination_path': UKIYOE_MEDIA_ROOT,
-        'pre_trained_path': PRE_TRAINED_UKIYOE
+        'pre_trained_path': PRE_TRAINED_UKIYOE,
     },
     'horse': {
         'destination_path': HORSE_MEDIA_ROOT,
-        'pre_trained_path': PRE_TRAINED_HORSE
+        'pre_trained_path': PRE_TRAINED_HORSE,
     },
     'orange': {
         'destination_path': ORANGE_MEDIA_ROOT,
-        'pre_trained_path': PRE_TRAINED_ORANGE
+        'pre_trained_path': PRE_TRAINED_ORANGE,
     }
 }
 
