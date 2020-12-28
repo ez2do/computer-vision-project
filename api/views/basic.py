@@ -13,9 +13,15 @@ SRC_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/source/')
 MONET_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/monet/')
 SUMMER_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/summer/')
 WINTER_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/winter/')
+UKIYOE_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/ukiyoe/')
+HORSE_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/horse/')
+ORANGE_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/orange/')
 
-PRE_TRAINED_MONET = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_monet2photo_checkpoints.100')
+PRE_TRAINED_MONET = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_monet2photo_checkpoints.040')
 PRE_TRAINED_SUMMER = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_summer2winter_checkpoints.040')
+PRE_TRAINED_UKIYOE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_ukiyoe_checkpoints.025')
+PRE_TRAINED_HORSE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_horse2zebra_checkpoints.020')
+PRE_TRAINED_ORANGE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_apple2orange_checkpoints.020')
 
 CONVERT_MAP = {
     'monet': {
@@ -26,9 +32,17 @@ CONVERT_MAP = {
         'destination_path': SUMMER_MEDIA_ROOT,
         'pre_trained_path': PRE_TRAINED_SUMMER
     },
-    'winter': {
-        'destination_path': '',
-        'pre_trained_path': ''
+    'ukiyoe': {
+        'destination_path': UKIYOE_MEDIA_ROOT,
+        'pre_trained_path': PRE_TRAINED_UKIYOE
+    },
+    'horse': {
+        'destination_path': HORSE_MEDIA_ROOT,
+        'pre_trained_path': PRE_TRAINED_HORSE
+    },
+    'orange': {
+        'destination_path': ORANGE_MEDIA_ROOT,
+        'pre_trained_path': PRE_TRAINED_ORANGE
     }
 }
 

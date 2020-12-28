@@ -42,7 +42,7 @@ def pretrained_model_predict(path_pretrained_weight, path_image,
 
 
 if __name__ == "__main__":
-    path_pretrained_weight = "pretrained_weights/cyclegan_checkpoints.100"
+    path_pretrained_weight = "pretrained_weights/cyclegan_ukiyoe_checkpoints.025"
     try:
         pretrained_model_predict(
             path_pretrained_weight=path_pretrained_weight,
