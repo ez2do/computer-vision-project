@@ -19,7 +19,7 @@ ORANGE_MEDIA_ROOT = os.path.join(BASE_DIR, 'api/media/orange/')
 
 PRE_TRAINED_MONET = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_monet2photo_checkpoints.040')
 PRE_TRAINED_SUMMER = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_summer2winter_checkpoints.040')
-PRE_TRAINED_UKIYOE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_ukiyoe_checkpoints.025')
+PRE_TRAINED_UKIYOE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_ukiyoe2photo_checkpoints.020')
 PRE_TRAINED_HORSE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_horse2zebra_checkpoints.020')
 PRE_TRAINED_ORANGE = os.path.join(BASE_DIR, 'pretrained_weights/cyclegan_apple2orange_checkpoints.020')
 
